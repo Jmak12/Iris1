@@ -1,10 +1,10 @@
-# Iris-Recognition-PyTorch
-An end-to-end Iris Recognition using PyTorch.
+# Reconnaissance de l'IRIS
+Du début à la fin, le projet utilise PyTorch.
 
 
 ## Installation
 
-* Prepare tools for setup virtual environment (If you have already done, skip it):
+* Préparez les outils pour configurer l'environnement virtuel (si vous l'avez déjà fait, ignorez-le):
 ```
 sudo apt-get install -y python-pip python3-pip cmake
 mkdir ~/.virtualenvs
@@ -18,43 +18,43 @@ echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-* Create a new virtual environment, named *iris*:
+* Créez un nouvel environnement virtuel, nommé * iris *:
 ```
 virtualenv -p python3.6 iris
 workon iris
 ```
 
-* Clone git and install required packages:
+* Cloner git et installer les paquets requis: 
 ```
 cd Iris-Recognition-PyTorch
 pip install -r requirements.txt
-pip install git+https://github.com/thuyngch/pytorch-image-models##egg=timm
+pip install git+https://github.com/Jmak12/pytorch-image-models##egg=timm
 ```
 
 
-## Training
-* The used datasets are [MMU2](https://www.cs.princeton.edu/~andyz/irisrecognition) and [CASIA1](https://github.com/thuyngch/Iris-Recognition/tree/master/CASIA1). Each dataset is used independently.
+## Entraînement
+* Les jeux de données utilisés sont [MMU2] (https://www.cs.princeton.edu/~andyz/irisrecognition) et [CASIA1] (https://github.com/thuyngch/Iris-Recognition/tree/master/CASIA1). . Chaque jeu de données est utilisé indépendamment.
 
-* MMU2 dataset contains 995 images corresponding to 100 people. Each person was captured two eyes and each eye was captured 5 images (But one person is only captured one eye). In which, with each eye, 3 random images are selected for the training set and the rest belong to the testing set. Totally, the training size is 597, and the testing size is 398. List of training set and testing size can be found in [data/mmu2_train.txt](data/mmu2_train.txt) and [data/mmu2_valid.txt](data/mmu2_valid.txt)
+* Le jeu de données MMU2 contient 995 images correspondant à 100 personnes. Chaque personne a été capturée deux yeux et chaque œil a été capturé 5 images (Mais une personne n'est capturée qu'un œil). Dans lequel, avec chaque œil, 3 images aléatoires sont sélectionnées pour le kit d’entraînement et le reste appartient au groupe de test. Au total, la taille de la formation est 597 et la taille du test est 398. Vous trouverez la liste des ensembles de formation et la taille du test dans [data / mmu2_train.txt] (data / mmu2_train.txt) et [data / mmu2_valid.txt] (data /mmu2_valid.txt)
 
-* Meanwhile, CASIA1 dataset consists of 756 images corresponding to 108 people. Each person was also captured two eyes, the left one was captured 3 times, while the right one was captured 4 times. I randomly select 2/3 left-eye images and 2/2 right-eye images for the training set. In sum, the training size is 432, and the testing size is 324. List of training set and testing size can be found in [data/casia1_train.txt](data/casia1_train.txt) and [data/casia1_valid.txt](data/casia1_valid.txt)
+* Parallèlement, le jeu de données CASIA1 comprend 756 images correspondant à 108 personnes. Chaque personne a également été capturée deux yeux, celui de gauche capturé 3 fois et celui de droite capturé 4 fois. Je sélectionne au hasard 2/3 images de l'œil gauche et 2/2 images de l'œil droit pour l'ensemble d'entraînement. En résumé, la taille de la formation est de 432 et la taille du test est de 324. Vous trouverez la liste des ensembles de formation et la taille du test dans [data / casia1_train.txt] (data / casia1_train.txt) et [data / casia1_valid.txt] ( data / casia1_valid.txt)
 
 |        | Train images | Test images |
 |--------|--------------|-------------|
 |  MMU2  |      597     |     398     |
 | CASIA1 |      432     |     324     |
 
-* Regarding the model, I refer [EfficientNet](https://arxiv.org/abs/1905.11946) with two variants b0 and b1. Models are trained by optimizer [SGDR](https://arxiv.org/abs/1608.03983) with 300 epochs.
+* En ce qui concerne le modèle, je me réfère à [EfficientNet] (https://arxiv.org/abs/1905.11946) avec deux variantes b0 et b1. Les modèles sont formés par l’optimiseur [SGDR] (https://arxiv.org/abs/1608.03983) avec 300 époques.
 
-* Config files can be found in the folder [configs](configs). To start the training process using EfficientNet-b0 on the MMU2 dataset with GPU0, use the command:
+* Les fichiers de configuration peuvent être trouvés dans le dossier [configs] (configs). Pour démarrer le processus de formation à l'aide de EfficientNet-b0 sur le jeu de données MMU2 avec GPU0, utilisez la commande suivante:
 ```
 python train.py --config config/mmu2_b0.json --device 0
 ```
 
 
-## Results
+## Resultats
 
-* Loss and accuracy on the MMU2 dataset are summarized and plotted as follows:
+* La perte et la précision sur le jeu de données MMU2 sont résumées et tracées comme suit:
 
 |                 | Loss (train/valid) | Accuracy (train/valid) |
 |-----------------|--------------------|------------------------|
@@ -104,7 +104,7 @@ gdown https://drive.google.com/uc?id=1yAnpO_UotSP8zgVTGqOT0iLpGcAOF5EE&export=do
 gdown https://drive.google.com/uc?id=1VdAg-_Sjm3gVAg_KLpJkL6RktxAcgJZH&export=download # casia1_b1
 ```
 
-* To ensure the trained model focuses on iris region inside images, I use [Grad-CAM](https://arxiv.org/abs/1610.02391) to visualize attention of the last feature layer (right before Global Average Pooling). To visualize heatmap, use this command:
+* Pour que le modèle formé se concentre sur la région de l'iris à l'intérieur des images, j'utilise [Grad-CAM] (https://arxiv.org/abs/1610.02391) pour visualiser l'attention de la dernière couche d'entités (juste avant la mise en pool globale moyenne). Pour visualiser heatmap, utilisez cette commande:
 ```
 python visualize.py --image /home/thuyngch/datasets/Iris/MMU2/010105.bmp \
                     --config config/mmu2_b0.json \
